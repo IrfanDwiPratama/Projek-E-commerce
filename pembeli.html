@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zs.fan Product</title>
+  <link rel="stylesheet" href="stylepembeli.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <h1>Z.fan<span>Art</span></h1>
+      </div>
+      
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Cari produk..." class="search-input">
+        <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+      
+      <div class="cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-container">
+    <!-- Sidebar Kategori -->
+    <aside class="sidebar">
+      <h3>Kategori</h3>
+      <ul class="category-list">
+        <li class="category-item active" data-category="all">Semua Produk</li>
+        <li class="category-item" data-category="Pensil">Pensil</li>
+        <li class="category-item" data-category="Cat">Cat</li>
+        <li class="category-item" data-category="Kanvas">Kanvas</li>
+        <li class="category-item" data-category="Kuas">Kuas</li>
+      </ul>
+    </aside>
+
+    <!-- Konten Utama -->
+    <main class="content">
+
+      <!-- Daftar Produk -->
+      <section class="products-section">
+        <h2 class="section-title">Produk Terbaru</h2>
+        <div id="shop-product-list" class="product-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Floating Cart Button -->
+  <div class="floating-cart">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="floating-cart-count">0</span>
+  </div>
+
+  <!-- Cart Panel -->
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h3>Keranjang Belanja</h3>
+      <button class="close-cart"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="cart" class="cart-content">
+      <p id="cart-empty" class="text-gray-500">Keranjang kosong.</p>
+      <ul id="cart-items" class="cart-items-list"></ul>
+      <div class="cart-summary">
+        <p id="total-price" class="total-price">Total: Rp 0</p>
+        <div id="cart-actions" class="cart-actions hidden">
+          <button id="checkout-btn" class="btn-checkout">Checkout</button>
+          <button id="clear-cart-btn" class="btn-clear">Kosongkan Keranjang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cart-overlay"></div>
+
+  <script src="scriptpembeli.js"></script>
+</body>
+</html>

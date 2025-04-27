@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TokoKu - Admin</title>
+  <link rel="stylesheet" href="stylepembeli.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <h1>Z.fan<span>Art - Admin</span></h1>
+      </div>
+      <!-- Add navigation button -->
+      <div class="nav-button">
+        <a href="pembeli.html" class="btn-secondary">Go to Pembelian</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-container">
+    <!-- Sidebar Kategori -->
+    <aside class="sidebar">
+      <h3>Menu Admin</h3>
+      <ul class="category-list">
+        <li class="category-item active" data-section="product-form">Tambah Produk</li>
+        <li class="category-item" data-section="product-list">Daftar Produk</li>
+      </ul>
+    </aside>
+
+    <!-- Konten Utama -->
+    <main class="content">
+      <!-- Form Tambah/Edit Produk -->
+      <section id="product-form-section" class="products-section">
+        <h2 class="section-title">Tambah/Edit Produk</h2>
+        <form id="product-form" class="admin-form">
+          <input type="hidden" id="product-id" />
+          <div class="form-group">
+            <label for="name">Nama Produk</label>
+            <input id="name" type="text" placeholder="Nama Produk" class="input" required />
+          </div>
+          <div class="form-group">
+            <label for="price">Harga</label>
+            <input id="price" type="number" placeholder="Harga" class="input" required />
+          </div>
+          <div class="form-group">
+            <label for="category">Kategori</label>
+            <select id="category" class="input" required>
+              <option value="">Pilih Kategori</option>
+              <option value="Pensil">Pensil</option>
+              <option value="Cat">Cat</option>
+              <option value="Kanvas">Kanvas</option>
+              <option value="Kuas">Kuas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="image-file">Gambar Produk</label>
+            <input id="image-file" type="file" accept="image/*" class="input" />
+          </div>
+          <div class="form-group">
+            <label for="description">Deskripsi</label>
+            <textarea id="description" placeholder="Deskripsi" class="input"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Simpan Produk</button>
+        </form>
+      </section>
+
+      <!-- Daftar Produk -->
+      <section id="product-list-section" class="products-section hidden">
+        <h2 class="section-title">Daftar Produk</h2>
+        <div id="product-list" class="product-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Navigasi menu admin
+    document.querySelectorAll('.category-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        const section = item.dataset.section;
+        document.querySelectorAll('.products-section').forEach(sec => {
+          sec.classList.add('hidden');
+        });
+        document.getElementById(`${section}-section`).classList.remove('hidden');
+      });
+    });
+
+    // Modifikasi fungsi saveProduct untuk menyertakan kategori
+    function saveProduct(id, name, price, image, description, category) {
+      const newProduct = { name, price, image, description, category };
+    
+      if (id) {
+        products[id] = newProduct;
+      } else {
+        products.push(newProduct);
+      }
+    
+      saveToStorage();
+      renderProducts();
+      document.getElementById('product-form').reset();
+    }
+
+    // Update event listener form
+    document.getElementById('product-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      console.log('Form submitted'); // Debugging to check how many times this runs
+
+      const id = document.getElementById('product-id').value;
+      const name = document.getElementById('name').value;
+      const price = document.getElementById('price').value;
+      const category = document.getElementById('category').value;
+      const description = document.getElementById('description').value;
+
+      const fileInput = document.getElementById('image-file');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+          const imageBase64 = reader.result;
+          saveProduct(id, name, price, imageBase64, description, category);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        const existingImage = id ? products[id].image : '';
+        saveProduct(id, name, price, existingImage, description, category);
+      }
+    });
+
+    // Update fungsi editProduct untuk menampilkan kategori
+    function editProduct(index) {
+      const p = products[index];
+      document.getElementById('product-id').value = index;
+      document.getElementById('name').value = p.name;
+      document.getElementById('price').value = p.price;
+      document.getElementById('category').value = p.category || '';
+      document.getElementById('description').value = p.description || '';
+      
+      // Scroll ke form
+      document.querySelector('.category-item[data-section="product-form"]').click();
+    }
+  </script>
+</body>
+</html>
